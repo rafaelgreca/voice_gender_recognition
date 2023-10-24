@@ -18,25 +18,30 @@ class MLP(nn.Module):
                 in_features=self.input_dim,
                 out_features=64
             ),
+            nn.ReLU(),
             nn.Linear(
                 in_features=64,
                 out_features=64
             ),
+            nn.ReLU(),
             nn.Dropout(0.25),
             nn.Linear(
                 in_features=64,
                 out_features=256
             ),
+            nn.ReLU(),
             nn.Dropout(0.25),
             nn.Linear(
                 in_features=256,
                 out_features=256
             ),
+            nn.ReLU(),
             nn.Dropout(0.25),
             nn.Linear(
                 in_features=256,
                 out_features=64
             ),
+            nn.ReLU(),
             nn.Linear(
                 in_features=64,
                 out_features=self.num_classes
