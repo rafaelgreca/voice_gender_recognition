@@ -2,6 +2,7 @@ import pandas as pd
 import os
 import torch
 import torch.nn as nn
+import argparse
 from sklearn.metrics import accuracy_score
 from torch.utils.data import DataLoader
 from src.model import MLP
@@ -115,7 +116,9 @@ def training_pipeline(
     folds: List,
     batch_size: int,
     learning_rate: float,
-    epochs: int
+    epochs: int,
+    output_path: str,
+    log_path: str
 ) -> None:
     """
     The training pipeline.
@@ -125,11 +128,12 @@ def training_pipeline(
         batch_size (int): the batch size value.
         learning_rate (float): the learning rate value.
         epochs (int): the number of epochs to train the model.
+        output_path (str): the output path where the models'
+                           checkpoints will be saved.
+        log_path (str): the path where the loggings will be saved.
     """
     best_valid_acc, best_train_acc, best_test_acc = [], [], []
-    output_path = os.path.join(os.getcwd(), "checkpoints")
-    log_path = os.path.join(os.getcwd(), "logs")
-    
+        
     # creating logging folder
     os.makedirs(log_path, exist_ok=True)
     logs = pd.DataFrame()
@@ -268,11 +272,15 @@ def training_pipeline(
         print()
         
 if __name__ == "__main__":
-    file_path = "/media/greca/HD/Datasets/Gender Recognition by Voice/voice.csv"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-i", "--input_dir", required=True, type=str)
+    parser.add_argument("-o", "--output_dir", required=True, type=str)
+    parser.add_argument("-l", "--logging_dir", required=True, type=str)
+    args = parser.parse_args()
     
     # reading the csv file
     data = read_csv(
-        file_path=file_path,
+        file_path=args.input_dir,
         sep=","
     )
     
@@ -286,5 +294,7 @@ if __name__ == "__main__":
         folds=folds,
         batch_size=32,
         learning_rate=0.001,
-        epochs=150
+        epochs=150,
+        output_path=args.output_dir,
+        log_path=args.logging_dir
     )
