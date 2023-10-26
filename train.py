@@ -140,7 +140,7 @@ def training_pipeline(
         
     for i, fold in enumerate(folds):
         print("\n"); print("*" * 30)
-        print(f"Epoch {i+1}"); print("*" * 30); print("\n")
+        print(f"FOLD {i+1}"); print("*" * 30); print("\n")
         
         (X_train, y_train), (X_valid, y_valid), (X_test, y_test) = fold
         
